@@ -36,9 +36,9 @@ func (reggram *RegGram) Build(inputs []string) (ret bool, info string) {
 		}
 		reggram.ProdExps = append(reggram.ProdExps, ProdExp{tmp_input[0], tmp_input[1]})
 	}
-	for _,val:=range reggram.ProdExps{
-		fmt.Println(val)
-	}
+	//	for _,val:=range reggram.ProdExps{
+	//		fmt.Println(val)
+	//	}
 	fmt.Printf("%v lines Regular expression has been read\n", len(reggram.ProdExps))
 	return
 }

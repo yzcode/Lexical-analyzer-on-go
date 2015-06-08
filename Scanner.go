@@ -11,6 +11,14 @@ import (
 
 func main() {
 	reg_file := "lex.txt"
+	src_file := "test.in"
+	for i, val := range os.Args {
+		if i == 1 {
+			reg_file = val
+		} else if i == 2 {
+			src_file = val
+		}
+	}
 	reg_exp_str := make([]string, 0)
 	if fin, err := os.Open(reg_file); err == nil {
 		defer fin.Close()
@@ -35,7 +43,6 @@ func main() {
 		fmt.Println(info)
 	} else {
 		//fmt.Println(run_nfa.States[1].Next['i'][2].State)
-		src_file := "test.cpp"
 		if sfin, err := os.Open(src_file); err == nil {
 			defer sfin.Close()
 			sfin := bufio.NewReader(sfin)
@@ -52,10 +59,19 @@ func main() {
 			fmt.Println(err)
 		}
 	}
-	run_nfa.RunAna(run_src,&run_reg);
-	for _,val:=range run_nfa.Tokens{
-		fmt.Printf("%s\t \t %s \t \t %s\n",val.Content,val.Type.Des,val.Type.Father)
+	lex_table_file := "lex_table.txt"
+	fout, err := os.Create(lex_table_file)
+	defer fout.Close()
+	if err != nil {
+		fmt.Println(lex_table_file, "err")
+	} else {
+		run_nfa.RunAna(run_src, &run_reg)
+		for _, val := range run_nfa.Tokens {
+			fout.WriteString(fmt.Sprintf("%s\t%s\t%s\r\n", val.Type.Des, val.Type.Father, val.Content))
+		}
+		fout.WriteString("#\tfile_end\t#\n")
 	}
+	fmt.Println("--lex scanner finish--")
 	//	for _,val:=range run_reg.ProdExps{
 	//		fmt.Println(val);
 	//	}

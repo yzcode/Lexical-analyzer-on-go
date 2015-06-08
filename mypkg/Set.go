@@ -1,11 +1,14 @@
 package mypkg
-import(
+
+import (
 	"sync"
 )
+
 type Set struct {
 	m map[int]bool
 	sync.RWMutex
 }
+
 func NewSet() *Set {
 	return &Set{
 		m: map[int]bool{},
